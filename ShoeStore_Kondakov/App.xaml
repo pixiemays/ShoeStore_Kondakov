@@ -1,0 +1,14 @@
+﻿<Application x:Class="ShoeStore_Kondakov.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ShoeStore_Kondakov"
+             StartupUri="AuthorizationWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="{x:Type Control}">
+            <Setter Property="FontFamily" Value="Times New Roman" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="Times New Roman" />
+        </Style>
+    </Application.Resources>
+</Application>

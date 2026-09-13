@@ -1,0 +1,31 @@
+﻿<Window x:Class="ShoeStore_Kondakov.AuthorizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShoeStore_Kondakov"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="170" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Width="600" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0" Orientation="Horizontal" Background="#7FFF00">
+            <Image Source=".\Assets\Icon.png" Width="80" Margin="120,5,25,5" />
+            <TextBlock FontSize="28" VerticalAlignment="Center">Авторизация</TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
+            <StackPanel>
+                <TextBlock FontSize="16">Логин</TextBlock>
+                <TextBox />
+            </StackPanel>
+            <StackPanel Margin="0,6,0,0">
+                <TextBlock FontSize="16">Пароль</TextBlock>
+                <PasswordBox />
+            </StackPanel>
+            <Button Margin="0,15,0,0" FontSize="16" Click="Login_Click">Войти</Button>
+            <Button Margin="0,10,0,0" Width="120" FontSize="16">Войти как гость</Button>
+        </StackPanel>
+    </Grid>
+</Window>
