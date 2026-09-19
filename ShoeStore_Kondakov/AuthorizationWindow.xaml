@@ -18,14 +18,14 @@
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
             <StackPanel>
                 <TextBlock FontSize="16">Логин</TextBlock>
-                <TextBox />
+                <TextBox x:Name="loginText" />
             </StackPanel>
             <StackPanel Margin="0,6,0,0">
                 <TextBlock FontSize="16">Пароль</TextBlock>
-                <PasswordBox />
+                <PasswordBox x:Name="passwordText" />
             </StackPanel>
             <Button Margin="0,15,0,0" FontSize="16" Click="Login_Click">Войти</Button>
-            <Button Margin="0,10,0,0" Width="120" FontSize="16">Войти как гость</Button>
+            <Button Margin="0,10,0,0" Width="120" Click="Guest_Click" FontSize="16">Войти как гость</Button>
         </StackPanel>
     </Grid>
 </Window>

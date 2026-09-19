@@ -12,7 +12,7 @@ namespace ShoeStore_Kondakov
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class ShoeStoreEntities : DbContext
     {
         private static ShoeStoreEntities _context;
@@ -20,15 +20,15 @@ namespace ShoeStore_Kondakov
             : base("name=ShoeStoreEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public static ShoeStoreEntities GetContext()
         {
-            if (_context == null ) _context = new ShoeStoreEntities();
+            if (_context == null) _context = new ShoeStoreEntities();
             return _context;
         }
 

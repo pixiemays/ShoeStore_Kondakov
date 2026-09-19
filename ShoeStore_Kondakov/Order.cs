@@ -14,8 +14,13 @@ namespace ShoeStore_Kondakov
     
     public partial class Order
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Order()
+        {
+            this.OrderContents = new HashSet<OrderContent>();
+        }
+    
         public int Id { get; set; }
-        public int ContentId { get; set; }
         public System.DateTime OrderDate { get; set; }
         public System.DateTime DeliverDate { get; set; }
         public int PickupPointId { get; set; }
@@ -23,7 +28,8 @@ namespace ShoeStore_Kondakov
         public int ObtainCode { get; set; }
         public int StatusId { get; set; }
     
-        public virtual OrderContent OrderContent { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderContent> OrderContents { get; set; }
         public virtual PickupPoint PickupPoint { get; set; }
         public virtual Status Status { get; set; }
         public virtual User User { get; set; }

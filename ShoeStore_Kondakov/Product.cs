@@ -19,7 +19,7 @@ namespace ShoeStore_Kondakov
         {
             this.OrderContents = new HashSet<OrderContent>();
         }
-    
+
         public int Id { get; set; }
         public string Article { get; set; }
         public int NameId { get; set; }
@@ -44,7 +44,7 @@ namespace ShoeStore_Kondakov
             }
         }
         public bool isQuantity => Count <= 0;
-    
+
         public virtual Manufacturer Manufacturer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderContent> OrderContents { get; set; }
