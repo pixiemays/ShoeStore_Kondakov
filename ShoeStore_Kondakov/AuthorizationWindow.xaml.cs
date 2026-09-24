@@ -20,6 +20,7 @@ namespace ShoeStore_Kondakov
     /// </summary>
     public partial class AuthorizationWindow : Window
     {
+        private User _user;
         public AuthorizationWindow()
         {
             InitializeComponent();
@@ -32,11 +33,11 @@ namespace ShoeStore_Kondakov
 
             using (var db = new ShoeStoreEntities())
             {
-                var user = db.Users.FirstOrDefault(x => x.Login == login && x.Password == password);
+                _user = db.Users.FirstOrDefault(x => x.Login == login && x.Password == password);
 
-                if (user != null)
+                if (_user != null)
                 {
-                    ShowMainWindow();
+                    ShowMainWindow(_user);
                 } else
                 {
                     MessageBox.Show("qweqw", "MEOW", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -46,12 +47,12 @@ namespace ShoeStore_Kondakov
 
         private void Guest_Click(object sender, RoutedEventArgs e)
         {
-            ShowMainWindow();
+            ShowMainWindow(new User());
         }
 
-        private void ShowMainWindow()
+        private void ShowMainWindow(User user)
         {
-            MainMenuWindow mainMenuWindow = new MainMenuWindow();
+            MainMenuWindow mainMenuWindow = new MainMenuWindow(user);
             mainMenuWindow.Show();
             this.Close();
 
