@@ -1,63 +1,137 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ShoeStore_Kondakov
 {
-    /// <summary>
-    /// Interaction logic for MainMenuWindow.xaml
-    /// </summary>
     public partial class MainMenuWindow : Window
     {
-        private List<Product> searchList = ShoeStoreEntities.GetContext().Products.ToList();
+        private List<Product> _allProducts = new List<Product>();
+        private int _sortType = 0; // 0 - без сортировки, 1 - по возрастанию, 2 - по убыванию
+        private User _currentUser;
+
+        public MainMenuWindow()
+        {
+            InitializeComponent();
+            LoadData();
+        }
+
         public MainMenuWindow(User user)
         {
             InitializeComponent();
+            _currentUser = user;
 
-            ProductsList.ItemsSource = searchList;
-            if (user.FIO == null)
+            if (_currentUser != null && !string.IsNullOrWhiteSpace(_currentUser.FIO))
+            {
+                FIO.Text = _currentUser.FIO;
+            }
+            else
+            {
                 FIO.Text = "Гость";
-            else FIO.Text = user.FIO;
+            }
 
-            supplierBox.ItemsSource = ShoeStoreEntities.GetContext().Supplier.ToList();
+            if (_currentUser == null || (_currentUser.RoleId != 1 && _currentUser.RoleId != 2))
+            {
+                FilterPanel.Visibility = Visibility.Collapsed;
+            }
+
+            LoadData();
         }
 
-        private void Filter()
+        private void LoadData()
         {
-            if (searchBox.Text != "")
-                searchList = searchList.Where(x => x.Description.ToLower().Contains(searchBox.Text.ToLower())).ToList();
+            _allProducts = ShoeStoreEntities.GetContext().Products
+                .Include(p => p.ProductName)
+                .Include(p => p.ProductCategory)
+                .Include(p => p.Manufacturer)
+                .Include(p => p.Supplier)
+                .ToList();
 
-            if (supplierBox.SelectedIndex != -1)
-                searchList = searchList.Where(x => x.SupplierId == supplierBox.SelectedIndex).ToList();
+            List<Supplier> suppliers = ShoeStoreEntities.GetContext().Supplier.ToList();
+            suppliers.Insert(0, new Supplier { Id = 0, Name = "Все поставщики" });
+
+            supplierBox.ItemsSource = suppliers;
+            supplierBox.SelectedIndex = 0;
+
+            Filtr();
+        }
+
+        private void Filtr()
+        {
+            List<Product> searchList = _allProducts;
+
+            string search = searchBox.Text.ToLower().Trim();
+            if (search != "")
+            {
+                searchList = searchList.Where(x =>
+                    (x.ProductName != null && x.ProductName.Name.ToLower().Contains(search)) ||
+                    (x.Description != null && x.Description.ToLower().Contains(search)) ||
+                    (x.Manufacturer != null && x.Manufacturer.Name.ToLower().Contains(search)) ||
+                    (x.Supplier != null && x.Supplier.Name.ToLower().Contains(search)) ||
+                    (x.ProductCategory != null && x.ProductCategory.Name.ToLower().Contains(search)) ||
+                    (x.Unit != null && x.Unit.ToLower().Contains(search)) ||
+                    (x.Article != null && x.Article.ToLower().Contains(search))
+                ).ToList();
+            }
+
+            if (supplierBox.SelectedIndex > 0)
+            {
+                Supplier selectedSupplier = supplierBox.SelectedItem as Supplier;
+                if (selectedSupplier != null)
+                {
+                    searchList = searchList.Where(x => x.SupplierId == selectedSupplier.Id).ToList();
+                }
+            }
+
+            if (_sortType == 1)
+            {
+                searchList = searchList.OrderBy(x => x.Count).ToList();
+            }
+            else if (_sortType == 2)
+            {
+                searchList = searchList.OrderByDescending(x => x.Count).ToList();
+            }
 
             ProductsList.ItemsSource = searchList;
+        }
+
+        private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filtr();
+        }
+
+        private void supplierBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Filtr();
+        }
+
+        private void SortAsc_Click(object sender, RoutedEventArgs e)
+        {
+            _sortType = 1;
+            Filtr();
+        }
+
+        private void SortDesc_Click(object sender, RoutedEventArgs e)
+        {
+            _sortType = 2;
+            Filtr();
+        }
+
+        private void ResetFilters_Click(object sender, RoutedEventArgs e)
+        {
+            searchBox.Text = "";
+            supplierBox.SelectedIndex = 0;
+            _sortType = 0;
+            Filtr();
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
         {
             AuthorizationWindow authWindow = new AuthorizationWindow();
             authWindow.Show();
-            Close();
-        }
-
-        private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void supplierBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Filter();
+            this.Close();
         }
     }
 }
