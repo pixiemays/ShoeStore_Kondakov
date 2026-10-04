@@ -1,0 +1,144 @@
+﻿<Window x:Class="ShoeStore_Kondakov.AddEditProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавление/редактирование товара" 
+        Height="680" 
+        Width="720"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI" 
+        FontSize="13">
+
+    <Grid Background="#FFFFFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#76FF03">
+            <TextBlock Text="Управление товаром" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="20" 
+                       Foreground="#111111"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20,10">
+            <Grid HorizontalAlignment="Center" MaxWidth="540">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="210"/>
+                    <ColumnDefinition Width="310"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,6,15,6"/>
+                        <Setter Property="Foreground" Value="#222222"/>
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="4,0"/>
+                        <Setter Property="Margin" Value="0,4"/>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,4"/>
+                    </Style>
+                </Grid.Resources>
+
+                <TextBlock x:Name="LblId" Grid.Row="0" Grid.Column="0" Text="ID товара" Visibility="Collapsed"/>
+                <TextBox x:Name="TxtId" Grid.Row="0" Grid.Column="1" 
+                         Text="{Binding Id, Mode=OneWay}" IsReadOnly="True" Background="#F0F0F0" Visibility="Collapsed"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Фото товара" VerticalAlignment="Top" Margin="0,15,15,0"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,10,0,6">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <Border Width="70" Height="50" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1">
+                            <Image x:Name="PhotoTovarIm" Stretch="Uniform" 
+                                   Source="{Binding FullPhotoPath, TargetNullValue='/Assets/picture.png', FallbackValue='/Assets/picture.png'}"/>
+                        </Border>
+                        <Button x:Name="BtnSelectImage" 
+                                Content="Выбрать изображение" 
+                                Click="BtnSelectImage_Click"
+                                Margin="10,0,0,0" 
+                                Padding="10,3" 
+                                Height="26" 
+                                VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBox x:Name="TxtPhotoPath" Text="{Binding Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Наименование товара"/>
+                <ComboBox x:Name="CmbProductName" Grid.Row="2" Grid.Column="1" 
+                          SelectedValue="{Binding NameId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Категория товара"/>
+                <ComboBox x:Name="CmbCategory" Grid.Row="3" Grid.Column="1" 
+                          SelectedValue="{Binding ProductCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание товара"/>
+                <TextBox Grid.Row="4" Grid.Column="1" 
+                         Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Производитель товара"/>
+                <ComboBox x:Name="CmbManufacturer" Grid.Row="5" Grid.Column="1" 
+                          SelectedValue="{Binding ManufacturerId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Поставщик товара"/>
+                <ComboBox x:Name="CmbSupplier" Grid.Row="6" Grid.Column="1" 
+                          SelectedValue="{Binding SupplierId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Цена товара"/>
+                <TextBox Grid.Row="7" Grid.Column="1" 
+                         Text="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Единица измерения товара"/>
+                <TextBox Grid.Row="8" Grid.Column="1" 
+                         Text="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="Количество товара на складе"/>
+                <TextBox Grid.Row="9" Grid.Column="1" 
+                         Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Grid.Row="10" Grid.Column="0" Text="Действующая скидка"/>
+                <TextBox Grid.Row="10" Grid.Column="1" 
+                         Text="{Binding Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </ScrollViewer>
+
+        <Button Grid.Row="2" 
+                x:Name="BtnSave"
+                Content="Сохранить данные" 
+                Click="BtnSave_Click"
+                Width="140" 
+                Height="28" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"/>
+    </Grid>
+</Window>
