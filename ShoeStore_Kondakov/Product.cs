@@ -37,6 +37,16 @@ namespace ShoeStore_Kondakov
         }
         public bool isQuantity => Count <= 0;
 
+        public string ProductDisplayName
+        {
+            get
+            {
+                string title = ProductName != null ? ProductName.Name : (Description ?? "Товар");
+                double actualPrice = priceDiscount ?? Price;
+                return $"{Article} — {title} ({actualPrice:N2} ₽, на складе: {Count} шт.)";
+            }
+        }
+
         public string FullPhotoPath
         {
             get

@@ -25,6 +25,8 @@ namespace ShoeStore_Kondakov
         public string City { get; set; }
         public string Street { get; set; }
         public int BuildingNumber { get; set; }
+
+        public string FullAddress => $"{PostIndex}, {City}, {Street}, {BuildingNumber}";
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }

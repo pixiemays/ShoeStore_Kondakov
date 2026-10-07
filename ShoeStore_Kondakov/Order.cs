@@ -11,6 +11,7 @@ namespace ShoeStore_Kondakov
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     
     public partial class Order
     {
@@ -27,6 +28,30 @@ namespace ShoeStore_Kondakov
         public int ClientId { get; set; }
         public int ObtainCode { get; set; }
         public int StatusId { get; set; }
+
+        public string OrderArticles
+        {
+            get
+            {
+                if (OrderContents == null || OrderContents.Count == 0)
+                {
+                    return "Нет товаров";
+                }
+                return string.Join(", ", OrderContents.Where(c => c.Product != null).Select(c => c.Product.Article));
+            }
+        }
+
+        public string PickupAddressText
+        {
+            get
+            {
+                if (PickupPoint == null)
+                {
+                    return "Не указан";
+                }
+                return PickupPoint.FullAddress;
+            }
+        }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderContent> OrderContents { get; set; }

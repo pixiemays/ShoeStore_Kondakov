@@ -1,0 +1,184 @@
+<Window x:Class="ShoeStore_Kondakov.AddEditOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавление/редактирование заказа" 
+        Height="640" 
+        Width="820"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI" 
+        FontSize="13">
+
+    <Grid Background="#FFFFFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#76FF03">
+            <TextBlock Text="Управление заказом" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       FontSize="20" 
+                       Foreground="#111111"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20,15">
+            <Grid HorizontalAlignment="Center" MaxWidth="740">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="570"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,6,15,6"/>
+                        <Setter Property="Foreground" Value="#222222"/>
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="4,0"/>
+                        <Setter Property="Margin" Value="0,4"/>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,4"/>
+                    </Style>
+                    <Style TargetType="DatePicker">
+                        <Setter Property="Height" Value="26"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,4"/>
+                    </Style>
+                </Grid.Resources>
+
+                <TextBlock x:Name="LblId" Grid.Row="0" Grid.Column="0" Text="Номер заказа" Visibility="Collapsed"/>
+                <TextBox x:Name="TxtId" Grid.Row="0" Grid.Column="1" 
+                         Text="{Binding Id, Mode=OneWay}" IsReadOnly="True" Background="#F0F0F0" Visibility="Collapsed"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Статус заказа"/>
+                <ComboBox x:Name="CmbStatus" Grid.Row="1" Grid.Column="1" 
+                          SelectedValue="{Binding StatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="Name"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Адрес пункта выдачи"/>
+                <ComboBox x:Name="CmbPickupPoint" Grid.Row="2" Grid.Column="1" 
+                          SelectedValue="{Binding PickupPointId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id" 
+                          DisplayMemberPath="FullAddress"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Дата заказа"/>
+                <DatePicker x:Name="DpOrderDate" Grid.Row="3" Grid.Column="1"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Дата выдачи"/>
+                <DatePicker x:Name="DpDeliverDate" Grid.Row="4" Grid.Column="1"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Добавить товар"/>
+                <Grid Grid.Row="5" Grid.Column="1" Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox x:Name="CmbProducts" Grid.Column="0" 
+                              DisplayMemberPath="ProductDisplayName" 
+                              IsEditable="True" 
+                              Margin="0,0,8,0"/>
+
+                    <TextBlock Grid.Column="1" Text="Кол-во" Margin="0,0,6,0"/>
+
+                    <TextBox x:Name="TxtQuantity" Grid.Column="2" 
+                             Text="1" 
+                             TextAlignment="Center" 
+                             Margin="0,0,8,0"/>
+
+                    <Button x:Name="BtnAddProduct" Grid.Column="3" 
+                            Content="Добавить" 
+                            Width="90" 
+                            Height="26" 
+                            Click="BtnAddProduct_Click"/>
+                </Grid>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Товары в заказе" VerticalAlignment="Top" Margin="0,10,15,0"/>
+                <StackPanel Grid.Row="6" Grid.Column="1" Margin="0,6,0,0">
+                    <DataGrid x:Name="DgOrderItems" 
+                              AutoGenerateColumns="False" 
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              HeadersVisibility="Column" 
+                              GridLinesVisibility="Horizontal"
+                              MinHeight="160"
+                              MaxHeight="260"
+                              VerticalScrollBarVisibility="Auto"
+                              RowHeight="30">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Артикул" Binding="{Binding Product.Article}" Width="85" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Наименование" Binding="{Binding ProductTitle}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Цена" Binding="{Binding Product.Price, StringFormat='{}{0:N2} ₽'}" Width="80" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Скидка" Binding="{Binding Product.DiscountText}" Width="60" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Со скидкой" Binding="{Binding UnitPrice, StringFormat='{}{0:N2} ₽'}" Width="85" IsReadOnly="True"/>
+
+                            <DataGridTemplateColumn Header="Кол-во" Width="95">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Content="-" Width="20" Height="20" Margin="2,0" Click="BtnDecreaseCount_Click"/>
+                                            <TextBlock Text="{Binding Count}" MinWidth="22" TextAlignment="Center" VerticalAlignment="Center" Margin="2,0"/>
+                                            <Button Content="+" Width="20" Height="20" Margin="2,0" Click="BtnIncreaseCount_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Стоимость" Binding="{Binding TotalPrice, StringFormat='{}{0:N2} ₽'}" Width="90" IsReadOnly="True"/>
+
+                            <DataGridTemplateColumn Header="Удалить" Width="70">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Удалить" Height="22" Padding="4,0" Click="BtnRemoveItem_Click" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock x:Name="TxtTotalSum" 
+                               Text="В заказе нет товаров | Итоговая сумма: 0.00 ₽" 
+                               FontWeight="Bold" 
+                               Margin="0,8,0,0" 
+                               HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="BtnSave"
+                    Content="Сохранить данные" 
+                    Click="BtnSave_Click"
+                    Width="140" 
+                    Height="28" 
+                    Margin="0,0,10,0"/>
+            <Button x:Name="BtnCancel"
+                    Content="Отмена" 
+                    Click="BtnCancel_Click"
+                    Width="100" 
+                    Height="28"/>
+        </StackPanel>
+    </Grid>
+</Window>

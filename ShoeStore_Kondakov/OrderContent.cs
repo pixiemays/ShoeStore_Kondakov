@@ -21,5 +21,31 @@ namespace ShoeStore_Kondakov
     
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
+
+        public double UnitPrice
+        {
+            get
+            {
+                if (Product == null) return 0;
+                return Product.priceDiscount ?? Product.Price;
+            }
+        }
+
+        public double TotalPrice
+        {
+            get
+            {
+                return UnitPrice * Count;
+            }
+        }
+
+        public string ProductTitle
+        {
+            get
+            {
+                if (Product == null) return "Товар";
+                return Product.ProductName != null ? Product.ProductName.Name : Product.Description;
+            }
+        }
     }
 }

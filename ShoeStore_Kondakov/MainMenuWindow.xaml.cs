@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,6 +29,7 @@ namespace ShoeStore_Kondakov
                 FIO.Text = "Гость";
                 FilterPanel.Visibility = Visibility.Collapsed;
                 AdminActionsPanel.Visibility = Visibility.Collapsed;
+                btnOrders.Visibility = Visibility.Collapsed;
                 return;
             }
 
@@ -40,16 +41,19 @@ namespace ShoeStore_Kondakov
             {
                 FilterPanel.Visibility = Visibility.Visible;
                 AdminActionsPanel.Visibility = Visibility.Visible;
+                btnOrders.Visibility = Visibility.Visible;
             }
             else if (roleId == 2) // Менеджер
             {
                 FilterPanel.Visibility = Visibility.Visible;
                 AdminActionsPanel.Visibility = Visibility.Collapsed;
+                btnOrders.Visibility = Visibility.Visible;
             }
             else if (roleId == 3) // клиент
             {
                 FilterPanel.Visibility = Visibility.Collapsed;
                 AdminActionsPanel.Visibility = Visibility.Collapsed;
+                btnOrders.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -219,6 +223,13 @@ namespace ShoeStore_Kondakov
         {
             AuthorizationWindow authWin = new AuthorizationWindow();
             authWin.Show();
+            Close();
+        }
+
+        private void BtnOrders_Click(object sender, RoutedEventArgs e)
+        {
+            OrdersWindow ordersWin = new OrdersWindow(_currentUser);
+            ordersWin.Show();
             Close();
         }
     }
